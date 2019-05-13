@@ -31,26 +31,26 @@ SoftwareSerial SerialAT(10, 11); // RX, TX
 
 // Your GPRS credentials
 // Leave empty, if missing user or pass
-const char apn[]  = "diginet";
+const char apn[]  = "APN_NAME";
 const char user[] = "";
 const char pass[] = "";
 
 //MQTT credentials
-const char* mqttusername = "generic_brand_1263-generic_device-v1_2029"; //MQTT USER CREDENTIALS from Device Onboarding Page
+const char* mqttusername = "yourmqttusername"; //MQTT USER CREDENTIALS from Device Onboarding Page
 
-const char* mqttpassword = "1554449460_2029"; //MQTT USER CREDENTIALS from Device Onboarding Page
+const char* mqttpassword = "yourpassword"; //MQTT USER CREDENTIALS from Device Onboarding Page
 
-String DEVICE_SERIAL = "9147929962870148"; //Serailno of the device from Device Operation page
+String DEVICE_SERIAL = "mac_address"; //Serailno of the device from Device Operation page
 
 //Backend credentials
 
-const char* mqtt_server = "mqtt.iot.ideamart.io"; //mqtt.exampledomain.com
+const char* mqtt_server = "broker"; //mqtt.exampledomain.com
 
-char* EVENT_TOPIC = "generic_brand_1263/generic_device/v1/common"; //EVENT Topic from Device Onboarding Page
+char* EVENT_TOPIC = "topik"; //EVENT Topic from Device Onboarding Page
 
-String SUB_TOPIC_STRING = "+" + DEVICE_SERIAL + "/generic_brand_1263/generic_device/v1/sub"; //Action Topic from Device Onboarding Page
+String SUB_TOPIC_STRING = "sub"; //Action Topic from Device Onboarding Page
 
-String PUB_TOPIC_STRING = "+" + DEVICE_SERIAL + "/generic_brand_1263/generic_device/v1/pub"; //Action Topic Response from Device Onboarding Page
+String PUB_TOPIC_STRING = "pub"; //Action Topic Response from Device Onboarding Page
 
 char msg[1024];
 
@@ -81,7 +81,7 @@ void setupGSM() {
   delay(2000);
   printSerialData();
 
-  SerialAT.println("AT+CSTT=\"diginet\",\"\",\"\"");
+  SerialAT.println("AT+CSTT=\"apn\",\"\",\"\"");
 
   SerialAT.println("AT+COPS?");
   delay(2000);
@@ -144,7 +144,7 @@ void reconnect() {
 
     // Attempt to connect
 
-    if (mqtt.connect(clientId.c_str(), "generic_brand_1170-generic_device-nodemcu_1957", "1552448065_1957")) {
+    if (mqtt.connect(clientId.c_str(), "topik", "topik_1")) {
 
       Serial.println("connected");
 
@@ -182,7 +182,7 @@ void reconnect() {
 
   void readSensorValues(){
   
-    String message = "{\"eventName\":\"dataChanged\",\"status\":\"none\",\"ph\":\""+ String(distance) +"\",\"turbidity\":\""+ String(distance) +"\",\"light\":\""+ String(distance) +"\",\"mac\":\"9147929962870148\"}";  
+    String message = "{\"eventName\":\"dataChanged\",\"status\":\"none\",\"ph\":\""+ String(pHValue) +"\",\"turbidity\":\""+ String(turbid) +"\",\"light\":\""+ String(light) +"\",\"mac\":\"mac_address\"}";  
 
     char* msg = (char*)message.c_str();
 
